@@ -42,8 +42,16 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       // 端口号
       port: VITE_PORT,
       host: "0.0.0.0",
+      open: true,
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-      proxy: {}
+      proxy: {
+        "/expert-adventure": {
+          target: "http://localhost:3000",
+          changeOrigin: true,
+          rewrite: path =>
+            path.replace(/^\/expert-adventure/, "/expert-adventure")
+        }
+      }
     },
     plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION),
     // https://cn.vitejs.dev/config/dep-optimization-options.html#dep-optimization-options

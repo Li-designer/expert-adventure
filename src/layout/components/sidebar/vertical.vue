@@ -19,6 +19,8 @@ const showLogo = ref(
 const { routers, device, pureApp, isCollapse, menuSelect, toggleSideBar } =
   useNav();
 
+  
+
 const subMenuData = ref([]);
 
 const menuData = computed(() => {
@@ -73,7 +75,7 @@ watch(
         router
         unique-opened
         mode="vertical"
-        class="outer-most select-none"
+        class="select-none outer-most"
         :collapse="isCollapse"
         :default-active="route.path"
         :collapse-transition="false"
@@ -84,7 +86,7 @@ watch(
           :key="routes.path"
           :item="routes"
           :base-path="routes.path"
-          class="outer-most select-none"
+          class="select-none outer-most"
         />
       </el-menu>
     </el-scrollbar>

@@ -36,7 +36,7 @@ function onChange() {
       if (res.success) {
         storageSession().removeItem("async-routes");
         usePermissionStoreHook().clearAllCachePage();
-        initRouter();
+        // initRouter();
       }
     });
 }

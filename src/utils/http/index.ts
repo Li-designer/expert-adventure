@@ -18,6 +18,7 @@ import { useUserStoreHook } from "@/store/modules/user";
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
   timeout: 10000,
+  baseURL: "/expert-adventure",
   headers: {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",

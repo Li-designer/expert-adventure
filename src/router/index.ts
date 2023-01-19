@@ -138,25 +138,26 @@ router.beforeEach((to: toRouteType, _from, next) => {
         usePermissionStoreHook().wholeMenus.length === 0 &&
         to.path !== "/login"
       )
-        initRouter().then((router: Router) => {
-          if (!useMultiTagsStoreHook().getMultiTagsCache) {
-            const { path } = to;
-            const route = findRouteByPath(
-              path,
-              router.options.routes[0].children
-            );
-            // query、params模式路由传参数的标签页不在此处处理
-            if (route && route.meta?.title) {
-              useMultiTagsStoreHook().handleTags("push", {
-                path: route.path,
-                name: route.name,
-                meta: route.meta
-              });
-            }
-          }
-          router.push(to.fullPath);
-        });
-      toCorrectRoute();
+        // todo 获取异步路由
+        // initRouter().then((router: Router) => {
+        //   if (!useMultiTagsStoreHook().getMultiTagsCache) {
+        //     const { path } = to;
+        //     const route = findRouteByPath(
+        //       path,
+        //       router.options.routes[0].children
+        //     );
+        //     // query、params模式路由传参数的标签页不在此处处理
+        //     if (route && route.meta?.title) {
+        //       useMultiTagsStoreHook().handleTags("push", {
+        //         path: route.path,
+        //         name: route.name,
+        //         meta: route.meta
+        //       });
+        //     }
+        //   }
+        //   router.push(to.fullPath);
+        // });
+        toCorrectRoute();
     }
   } else {
     if (to.path !== "/login") {

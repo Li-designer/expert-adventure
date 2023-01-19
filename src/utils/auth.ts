@@ -8,9 +8,9 @@ export interface DataInfo<T> {
   /** `accessToken`的过期时间（时间戳） */
   expires: T;
   /** 用于调用刷新accessToken的接口时所需的token */
-  refreshToken: string;
+  refreshToken?: string;
   /** 用户名 */
-  username?: string;
+  username: string;
   /** 当前登陆用户的角色 */
   roles?: Array<string>;
 }
