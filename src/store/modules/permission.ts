@@ -20,6 +20,7 @@ export const usePermissionStore = defineStore({
       this.wholeMenus = filterNoPermissionTree(
         filterTree(ascending(this.constantMenus.concat(routes)))
       );
+      localStorage.setItem("wholeMenus", JSON.stringify(this.wholeMenus));
     },
     cacheOperate({ mode, name }: cacheType) {
       switch (mode) {

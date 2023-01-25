@@ -193,7 +193,6 @@ function handleAsyncRoutes(routeList) {
 
 /** 初始化路由（`new Promise` 写法防止在异步请求中造成无限循环）*/
 function initRouter() {
-
   if (getConfig()?.CachingAsyncRoutes) {
     // 开启动态路由缓存本地sessionStorage
     const key = "async-routes";
@@ -219,11 +218,11 @@ function initRouter() {
   } else {
     return new Promise(resolve => {
       // todo 获取异步路由
-      // getAsyncRoutes().then(({ data }) => {
-      //   handleAsyncRoutes(cloneDeep(data));
-      //   console.log("2", router, data);
-      //   resolve(router);
-      // });
+      getAsyncRoutes().then(({ data }) => {
+        handleAsyncRoutes(cloneDeep(data));
+        console.log("2", router, data);
+        resolve(router);
+      });
       resolve(router);
     });
   }
