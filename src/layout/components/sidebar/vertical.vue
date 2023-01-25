@@ -19,14 +19,15 @@ const showLogo = ref(
 const { routers, device, pureApp, isCollapse, menuSelect, toggleSideBar } =
   useNav();
 
-  
-
 const subMenuData = ref([]);
 
 const menuData = computed(() => {
+  console.log(menuData, "menuData");
   return pureApp.layout === "mix" && device.value !== "mobile"
     ? subMenuData.value
-    : usePermissionStoreHook().wholeMenus;
+    : usePermissionStoreHook().wholeMenus
+    ? JSON.parse(localStorage.getItem("wholeMenus"))
+    : [];
 });
 
 function getSubMenuData(path: string) {
@@ -62,10 +63,8 @@ watch(
 </script>
 
 <template>
-  <div
-    v-loading="menuData.length === 0"
-    :class="['sidebar-container', showLogo ? 'has-logo' : '']"
-  >
+  <!-- v-loading="menuData.length === 0" -->
+  <div :class="['sidebar-container', showLogo ? 'has-logo' : '']">
     <Logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar
       wrap-class="scrollbar-wrapper"
