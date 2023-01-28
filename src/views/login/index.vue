@@ -47,8 +47,8 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         .then(res => {
           const { data } = res;
           if (res.success) {
-            setToken(data);
-            // todo 获取后端路由
+            useUserStoreHook().SET_USERNAME(data.username);
+            // * 获取后端路由
             initRouter().then(() => {
               router.push("/");
               message("登录成功", { type: "success" });

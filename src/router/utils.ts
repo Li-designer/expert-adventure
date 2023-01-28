@@ -83,6 +83,7 @@ function isOneOfArray(a: Array<string>, b: Array<string>) {
 
 /** 从sessionStorage里取出当前登陆用户的角色roles，过滤无权限的菜单 */
 function filterNoPermissionTree(data: RouteComponent[]) {
+  debugger;
   const currentRoles =
     storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [];
   const newTree = cloneDeep(data).filter((v: any) =>
@@ -186,6 +187,7 @@ function handleAsyncRoutes(routeList) {
         }
       }
     );
+    console.log("%crouteList", "color: #FF8A00;font-size:20px;", routeList);
     usePermissionStoreHook().handleWholeMenus(routeList);
   }
   addPathMatch();
