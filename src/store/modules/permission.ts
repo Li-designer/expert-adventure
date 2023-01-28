@@ -17,6 +17,7 @@ export const usePermissionStore = defineStore({
   actions: {
     /** 组装整体路由生成的菜单 */
     handleWholeMenus(routes: any[]) {
+      // * 通过meta的roles过滤菜单有角色权限的显示
       this.wholeMenus = filterNoPermissionTree(
         filterTree(ascending(this.constantMenus.concat(routes)))
       );
