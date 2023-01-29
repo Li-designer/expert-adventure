@@ -11,7 +11,6 @@ export const usePermissionStore = defineStore({
     constantMenus,
     // 整体路由生成的菜单（静态、动态）
     wholeMenus: [],
-    // 缓存页面keepAlive
     cachePageList: []
   }),
   actions: {
@@ -21,7 +20,7 @@ export const usePermissionStore = defineStore({
       this.wholeMenus = filterNoPermissionTree(
         filterTree(ascending(this.constantMenus.concat(routes)))
       );
-      localStorage.setItem("wholeMenus", JSON.stringify(this.wholeMenus));
+      // localStorage.setItem("wholeMenus", JSON.stringify(this.wholeMenus));
     },
     cacheOperate({ mode, name }: cacheType) {
       switch (mode) {

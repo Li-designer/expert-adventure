@@ -120,6 +120,7 @@ router.beforeEach((to: toRouteType, _from, next) => {
     whiteList.includes(to.fullPath) ? next(_from.fullPath) : next();
   }
   if (userInfo) {
+    // debugger;
     // 无权限跳转403页面
     if (to.meta?.roles && !isOneOfArray(to.meta?.roles, userInfo?.roles)) {
       next({ path: "/error/403" });
@@ -138,26 +139,26 @@ router.beforeEach((to: toRouteType, _from, next) => {
         usePermissionStoreHook().wholeMenus.length === 0 &&
         to.path !== "/login"
       )
-        // todo 获取异步路由
-        // initRouter().then((router: Router) => {
-        //   if (!useMultiTagsStoreHook().getMultiTagsCache) {
-        //     const { path } = to;
-        //     const route = findRouteByPath(
-        //       path,
-        //       router.options.routes[0].children
-        //     );
-        //     // query、params模式路由传参数的标签页不在此处处理
-        //     if (route && route.meta?.title) {
-        //       useMultiTagsStoreHook().handleTags("push", {
-        //         path: route.path,
-        //         name: route.name,
-        //         meta: route.meta
-        //       });
-        //     }
-        //   }
-        //   router.push(to.fullPath);
-        // });
-        toCorrectRoute();
+        // * 刷新重新获取异步路由
+        initRouter().then((router: Router) => {
+          if (!useMultiTagsStoreHook().getMultiTagsCache) {
+            const { path } = to;
+            const route = findRouteByPath(
+              path,
+              router.options.routes[0].children
+            );
+            // query、params模式路由传参数的标签页不在此处处理
+            if (route && route.meta?.title) {
+              useMultiTagsStoreHook().handleTags("push", {
+                path: route.path,
+                name: route.name,
+                meta: route.meta
+              });
+            }
+          }
+          router.push(to.fullPath);
+        });
+      toCorrectRoute();
     }
   } else {
     if (to.path !== "/login") {

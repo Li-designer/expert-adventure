@@ -24,9 +24,7 @@ const subMenuData = ref([]);
 const menuData = computed(() => {
   return pureApp.layout === "mix" && device.value !== "mobile"
     ? subMenuData.value
-    : usePermissionStoreHook().wholeMenus
-    ? JSON.parse(localStorage.getItem("wholeMenus"))
-    : [];
+    : usePermissionStoreHook().wholeMenus;
 });
 
 function getSubMenuData(path: string) {
@@ -55,6 +53,12 @@ onBeforeMount(() => {
 watch(
   () => [route.path, usePermissionStoreHook().wholeMenus],
   () => {
+    console.log("%c", "color: #FF8A00;font-size:20px;", route.path);
+    console.log(
+      "%cusePermissionStoreHook().wholeMenus",
+      "color: #FF8A00;font-size:20px;",
+      usePermissionStoreHook().wholeMenus
+    );
     getSubMenuData(route.path);
     menuSelect(route.path, routers);
   }
@@ -81,7 +85,7 @@ watch(
       >
         <sidebar-item
           v-for="routes in menuData"
-          :key="routes.path"
+          :key="routes.key"
           :item="routes"
           :base-path="routes.path"
           class="select-none outer-most"
