@@ -6,7 +6,7 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 
 defineOptions({
-  name: "PermissionPage"
+  name: "permissionPage"
 });
 
 const elStyle = computed((): CSSProperties => {
