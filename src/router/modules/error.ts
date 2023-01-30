@@ -1,5 +1,6 @@
 export default {
   path: "/error",
+  // path: "/:catchAll(.*)",
   redirect: "/error/403",
   meta: {
     icon: "informationLine",

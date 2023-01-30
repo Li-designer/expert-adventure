@@ -11,6 +11,9 @@ const props = defineProps({
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
 
 const keepAlive = computed(() => {
+  console.log("====================================");
+  console.log($config?.KeepAlive);
+  console.log("====================================");
   return $config?.KeepAlive;
 });
 
@@ -37,40 +40,6 @@ const getSectionStyle = computed(() => {
     props.fixedHeader ? "" : "padding-top: 0;"
   ];
 });
-
-const transitionMain = defineComponent({
-  render() {
-    return h(
-      Transition,
-      {
-        name:
-          transitions.value(this.route) &&
-          this.route.meta.transition.enterTransition
-            ? "pure-classes-transition"
-            : (transitions.value(this.route) &&
-                this.route.meta.transition.name) ||
-              "fade-transform",
-        enterActiveClass:
-          transitions.value(this.route) &&
-          `animate__animated ${this.route.meta.transition.enterTransition}`,
-        leaveActiveClass:
-          transitions.value(this.route) &&
-          `animate__animated ${this.route.meta.transition.leaveTransition}`,
-        mode: "out-in",
-        appear: true
-      },
-      {
-        default: () => [this.$slots.default()]
-      }
-    );
-  },
-  props: {
-    route: {
-      type: undefined,
-      required: true
-    }
-  }
-});
 </script>
 
 <template>
@@ -84,12 +53,13 @@ const transitionMain = defineComponent({
           <el-backtop title="回到顶部" target=".app-main .el-scrollbar__wrap">
             <backTop />
           </el-backtop>
-          <transitionMain :route="route">
+          <Transition name="slide-fade">
             <keep-alive
               v-if="keepAlive"
               :include="usePermissionStoreHook().cachePageList"
             >
               <component
+                v-if="route.fullPath"
                 :is="Component"
                 :key="route.fullPath"
                 class="main-content"
@@ -101,10 +71,10 @@ const transitionMain = defineComponent({
               :key="route.fullPath"
               class="main-content"
             />
-          </transitionMain>
+          </Transition>
         </el-scrollbar>
         <div v-else>
-          <transitionMain :route="route">
+          <Transition>
             <keep-alive
               v-if="keepAlive"
               :include="usePermissionStoreHook().cachePageList"
@@ -121,7 +91,7 @@ const transitionMain = defineComponent({
               :key="route.fullPath"
               class="main-content"
             />
-          </transitionMain>
+          </Transition>
         </div>
       </template>
     </router-view>
@@ -144,5 +114,21 @@ const transitionMain = defineComponent({
 
 .main-content {
   margin: 24px;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transform: translateX(20px);
+  opacity: 0;
+  /* transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1); */
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 </style>
