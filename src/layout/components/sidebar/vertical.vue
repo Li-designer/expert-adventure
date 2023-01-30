@@ -53,12 +53,6 @@ onBeforeMount(() => {
 watch(
   () => [route.path, usePermissionStoreHook().wholeMenus],
   () => {
-    console.log("%c", "color: #FF8A00;font-size:20px;", route.path);
-    console.log(
-      "%cusePermissionStoreHook().wholeMenus",
-      "color: #FF8A00;font-size:20px;",
-      usePermissionStoreHook().wholeMenus
-    );
     getSubMenuData(route.path);
     menuSelect(route.path, routers);
   }
