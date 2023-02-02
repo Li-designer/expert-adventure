@@ -18,6 +18,8 @@ const {
   avatarsStyle,
   toggleSideBar
 } = useNav();
+
+const changeRole = () => {};
 </script>
 
 <template>
@@ -45,7 +47,7 @@ const {
       <Notice id="header-notice" />
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
-        <span class="el-dropdown-link navbar-bg-hover select-none">
+        <span class="select-none el-dropdown-link navbar-bg-hover">
           <img
             src="https://avatars.githubusercontent.com/u/44761321?v=4"
             :style="avatarsStyle"
@@ -54,6 +56,13 @@ const {
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="changeRole">
+              <IconifyIconOffline
+                :icon="LogoutCircleRLine"
+                style="margin: 5px"
+              />
+              切换角色
+            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"

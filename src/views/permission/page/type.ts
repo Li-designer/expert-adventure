@@ -6,9 +6,11 @@ export type Meta = {
   title: string;
 };
 export interface Menu {
+  id: number;
   path: string;
   parentKey?: string;
   name: string;
+  key?: string;
   component: string;
   icon?: string;
   title?: string;
