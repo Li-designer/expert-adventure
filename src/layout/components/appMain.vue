@@ -11,9 +11,6 @@ const props = defineProps({
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
 
 const keepAlive = computed(() => {
-  console.log("====================================");
-  console.log($config?.KeepAlive);
-  console.log("====================================");
   return $config?.KeepAlive;
 });
 

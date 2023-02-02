@@ -2,13 +2,15 @@
 <script setup lang="ts">
 import { getAsyncRoutes } from "@/api/routes";
 import { CircleCloseFilled } from "@element-plus/icons-vue";
-import { reactive, ref, toRaw } from "vue";
+import { reactive, ref, toRaw, toRefs } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { CirclePlusFilled } from "@element-plus/icons-vue";
 import { Menu } from "./type";
 import {
+  getMenuChildren,
   getMenuCreate,
+  getMenuDetail,
   getMenuUpdate,
   MenuCreatResult,
   MenuUpdateResult
@@ -19,28 +21,34 @@ defineOptions({
 });
 
 const tableData = ref<Menu[]>([]);
+const allData = ref<Menu[]>([]);
 const dialogVisible = ref(false);
 const dialogTitle = ref<string>("");
 // * 获取所有异步路由
 const getAllAsyncRoute = async () => {
   const { data } = await getAsyncRoutes();
+  allData.value = data || [];
   // 保存所有异步路由筛选子路由
   if (data.length > 0) {
     tableData.value = dealTreeData(data);
   }
 };
 
-const load = (
+const load = async (
   row: Menu,
   treeNode: unknown,
   resolve: (date: Menu[]) => void
 ) => {
   // * 筛选子路由
-  setTimeout(() => {
-    const tableDataChildren: Menu[] = dealTreeData(row.children);
+  // setTimeout(() => {
+  const { data, success } = await getMenuChildren({ key: row.key });
+  if (success) {
+    const tableDataChildren: Menu[] = dealTreeData(data);
     resolve(tableDataChildren);
-  }, 1000);
+  }
+  // }, 1000);
 };
+const handlerExpand = () => {};
 
 const dealTreeData = (data: Menu[]) => {
   const arr: Menu[] = data.map(item => {
@@ -62,8 +70,9 @@ getAllAsyncRoute();
 const flagEdit = ref(false);
 const id = ref(null);
 const formSize = ref("default");
-const value = ref("");
+const Row = ref<Menu>();
 const ruleFormRef = ref<FormInstance>();
+const expandTable = ref();
 const ruleForm = reactive({
   title: "",
   path: "",
@@ -168,7 +177,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         if (res.success) {
           message("操作成功!", { type: "success" });
           close();
-          getAllAsyncRoute();
+          await getAllAsyncRoute();
         }
       }
     } else {
@@ -177,25 +186,39 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   });
 };
 
+// const getParentRow = (arr, key) => {
+//   let Row = {};
+//   arr.forEach(item => {
+//     if (item.parentkey == key) {
+//       Row = item;
+//     } else if (item.children && item.children.length > 0) {
+//       getParentRow(item.children, key);
+//     }
+//   });
+//   return Row;
+// };
+
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
 };
 
 // 编辑菜单
-const editMenu = row => {
+const editMenu = async row => {
+  Row.value = row;
+  console.log(Row.value);
+
   flagEdit.value = true;
-  const form = JSON.parse(JSON.stringify(row));
-  console.log(form);
-
-  Object.keys(ruleForm).forEach(item => {
-    ruleForm[item] = form[item];
-  });
-  id.value = form.id;
-  dialogTitle.value = row.title;
-  dialogVisible.value = true;
+  const { data: form, success } = await getMenuDetail({ id: row.id });
+  if (success) {
+    Object.keys(ruleForm).forEach(item => {
+      ruleForm[item] = form[item];
+    });
+    id.value = row.id;
+    dialogTitle.value = row.title;
+    dialogVisible.value = true;
+  }
 };
-
 // 新增
 const deleteMenu = row => {};
 const close = () => {
@@ -220,22 +243,29 @@ const clearForm = () => {
     ruleForm[item] = form[item];
   });
 };
+
+const addMenu = () => {
+  dialogTitle.value = "新增菜单";
+  dialogVisible.value = true;
+};
 </script>
 
 <template>
   <!--  -->
   <div>
     <el-button
-      @click="dialogVisible = true"
+      @click="addMenu"
       size="small"
       :icon="CirclePlusFilled"
       style="margin-bottom: 10px"
       >新增菜单</el-button
     >
     <el-table
+      ref="expandTable"
       :data="tableData"
       style="width: 100%"
-      row-key="name"
+      @expand-change="handlerExpand"
+      row-key="id"
       border
       lazy
       :load="load"
@@ -249,7 +279,7 @@ const clearForm = () => {
       <el-table-column prop="rank" label="排序" />
       <el-table-column prop="showLink" label="是否显示" />
       <el-table-column prop="keepAlive" label="是否缓存" />
-      <el-table-column fixed="right" label="Operations" width="120">
+      <el-table-column fixed="right" label="操作" width="120">
         <template #default="{ row }">
           <el-button link type="primary" size="small" @click="editMenu(row)"
             >编辑</el-button
