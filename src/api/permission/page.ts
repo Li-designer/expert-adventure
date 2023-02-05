@@ -1,5 +1,5 @@
 import { http } from "@/utils/http";
-import { Menu } from "@/permission/page/type";
+import { Menu } from "@/views/permission/page/type";
 export type MenuCreatResult = {
   success: boolean;
   status: number;

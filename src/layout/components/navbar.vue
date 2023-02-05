@@ -7,6 +7,16 @@ import Breadcrumb from "./sidebar/breadCrumb.vue";
 import topCollapse from "./sidebar/topCollapse.vue";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
+import communityIcon from "@iconify-icons/iconoir/community";
+import { IconifyIconOffline } from "@/components/ReIcon";
+import { ref, reactive } from "vue";
+import { getRoleList } from "@/api/permission/role";
+import { initRouter } from "@/router/utils";
+import { usePermissionStoreHook } from "@/store/modules/permission";
+import { useUserStoreHook } from "@/store/modules/user";
+import { storageSession } from "@pureadmin/utils";
+import type { FormInstance } from "element-plus";
+import { getUserRole } from "@/api/permission/user";
 
 const {
   layout,
@@ -15,11 +25,57 @@ const {
   onPanel,
   pureApp,
   username,
+  roleNames,
+  id,
   avatarsStyle,
   toggleSideBar
 } = useNav();
-
-const changeRole = () => {};
+const dialogFormVisible = ref(false);
+const formLabelWidth = "140px";
+const options = ref([]);
+const ruleFormRef = ref<FormInstance>();
+const allRole = ref([
+  {
+    rolename: "全部角色",
+    roleType: ""
+  }
+]);
+const form = reactive({
+  username: "",
+  password: "",
+  role: ""
+});
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.resetFields();
+};
+// * 多角色登录返回全部菜单,通过角色切换筛选对应角色菜单
+// * 查找用户有的角色列表
+const changeRole = async () => {
+  getRole();
+  dialogFormVisible.value = true;
+};
+const getRole = async () => {
+  const { success, data } = await getUserRole({ id: id.value });
+  if (success) {
+    options.value = data.roles.concat(allRole.value);
+  }
+};
+const changeUserRole = () => {
+  useUserStoreHook()
+    .loginByUsername({ ...form })
+    .then(res => {
+      if (res.success) {
+        storageSession().removeItem("async-routes");
+        usePermissionStoreHook().clearAllCachePage();
+        dialogFormVisible.value = false;
+        resetForm(ruleFormRef.value);
+        form.password = "";
+        form.username = "";
+        initRouter();
+      }
+    });
+};
 </script>
 
 <template>
@@ -53,13 +109,20 @@ const changeRole = () => {};
             :style="avatarsStyle"
           />
           <p v-if="username" class="dark:text-white">{{ username }}</p>
+          <p
+            v-if="roleNames?.length"
+            class="dark:text-white"
+            style="margin-left: 5px; color: #df975d"
+          >
+            {{ roleNames?.join(" ") }}
+          </p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
             <el-dropdown-item @click="changeRole">
               <IconifyIconOffline
-                :icon="LogoutCircleRLine"
-                style="margin: 5px"
+                :icon="communityIcon"
+                style="margin: 5px; color: #df975d"
               />
               切换角色
             </el-dropdown-item>
@@ -81,6 +144,36 @@ const changeRole = () => {};
         <IconifyIconOffline :icon="Setting" />
       </span>
     </div>
+    <el-dialog v-model="dialogFormVisible" title="切换角色" width="35%">
+      <el-form :model="form" ref="ruleFormRef">
+        <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form.username" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input
+            type="password"
+            v-model="form.password"
+            autocomplete="off"
+          />
+        </el-form-item>
+        <el-form-item label="选择切换角色" :label-width="formLabelWidth">
+          <el-select v-model="form.role" placeholder="" style="width: 240px">
+            <el-option
+              v-for="(item, index) in options"
+              :key="index"
+              :label="item.rolename"
+              :value="item.roleType"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="changeUserRole"> 确认 </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 

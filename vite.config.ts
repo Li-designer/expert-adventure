@@ -63,6 +63,8 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       sourcemap: false,
       // 消除打包大小超过500kb警告
       chunkSizeWarningLimit: 4000,
+      // 打包文件名
+      outDir: "expert-adventure",
       rollupOptions: {
         input: {
           index: pathResolve("index.html")
