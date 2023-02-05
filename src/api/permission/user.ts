@@ -19,11 +19,18 @@ export type UserUpdateResult = {
   message: string;
   data: string;
 };
+export type UserRolesResult = {
+  success: boolean;
+  status: number;
+  extra: Object;
+  message: string;
+  data: User;
+};
 
 export type User = {
   id?: number;
   username: string;
-  password: string;
+  password?: string;
   roles: Role[];
 };
 
@@ -37,4 +44,7 @@ export const updateRoles = (data: object) => {
 };
 export const addUserList = (data?: object) => {
   return http.request<UserUpdateResult>("post", "/user/addUser", { data });
+};
+export const getUserRole = (params?: object) => {
+  return http.request<UserRolesResult>("get", "/user/userRoles", { params });
 };

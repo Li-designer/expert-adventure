@@ -20,9 +20,18 @@ export function useNav() {
   /** 平台`layout`中所有`el-tooltip`的`effect`配置，默认`light` */
   const tooltipEffect = getConfig()?.TooltipEffect ?? "light";
 
+  const id = computed(() => {
+    return useUserStoreHook()?.id;
+  });
   /** 用户名 */
   const username = computed(() => {
     return useUserStoreHook()?.username;
+  });
+  const roleNames = computed(() => {
+    return useUserStoreHook()?.roleNames;
+  });
+  const roles = computed(() => {
+    return useUserStoreHook()?.roles;
   });
 
   const avatarsStyle = computed(() => {
@@ -138,6 +147,9 @@ export function useNav() {
     isCollapse,
     pureApp,
     username,
+    roleNames,
+    roles,
+    id,
     avatarsStyle,
     tooltipEffect
   };
