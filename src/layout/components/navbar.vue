@@ -10,7 +10,6 @@ import Setting from "@iconify-icons/ri/settings-3-line";
 import communityIcon from "@iconify-icons/iconoir/community";
 import { IconifyIconOffline } from "@/components/ReIcon";
 import { ref, reactive } from "vue";
-import { getRoleList } from "@/api/permission/role";
 import { initRouter } from "@/router/utils";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import { useUserStoreHook } from "@/store/modules/user";
