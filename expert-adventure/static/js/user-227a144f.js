@@ -1,0 +1,1 @@
+import{ab as s}from"./index-fff9eaea.js";const r=e=>s.request("get","/user/all",{params:e}),u=e=>s.request("post","/user/updateRoles",{data:e}),o=e=>s.request("post","/user/addUser",{data:e}),a=e=>s.request("get","/user/userRoles",{params:e});export{r as a,o as b,a as g,u};
