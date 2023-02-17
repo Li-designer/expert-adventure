@@ -1,0 +1,1 @@
+import{ab as t}from"./index-fff9eaea.js";const o=()=>t.request("get","/role/roleList"),r=e=>t.request("post","/role/addRole",{data:e}),a=e=>t.request("post","/role/updateMenuKeys",{data:e}),l=e=>t.request("post","/role/updateMenuKeys",{data:e});export{r as a,l as b,a as e,o as g};
