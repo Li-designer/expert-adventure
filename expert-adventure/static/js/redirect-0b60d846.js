@@ -1,1 +1,0 @@
-import{u as c}from"./vue-router-ff44b207.js";import{q as t,u as p,t as u,v as _}from"./runtime-core.esm-bundler-3932d34b.js";const m=t({name:"Redirect"}),y=t({...m,setup(i){const{currentRoute:r,replace:a}=c(),{params:o,query:n}=p(r),{path:e}=o,s=Array.isArray(e)?e.join("/"):e;return a({path:"/"+s,query:n}),(f,l)=>(u(),_("div"))}});export{y as default};
