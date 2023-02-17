@@ -1,6 +1,6 @@
 {
-  "name": "pure-admin-thin",
-  "version": "3.9.7",
+  "name": "expert-adventure",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS=--max-old-space-size=4096 vite",
@@ -48,9 +48,11 @@
     "pinia": "^2.0.28",
     "qs": "^6.11.0",
     "responsive-storage": "^2.1.0",
+    "socket.io-client": "^4.6.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "vue-types": "^4.2.1"
+    "vue-types": "^4.2.1",
+    "websocket-ts": "^1.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "13.1.0",

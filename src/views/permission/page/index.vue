@@ -16,6 +16,7 @@ import {
   MenuUpdateResult
 } from "@/api/permission/page";
 import { message } from "@/utils/message";
+
 defineOptions({
   name: "permissionPage"
 });
@@ -73,6 +74,7 @@ const formSize = ref("default");
 const Row = ref<Menu>();
 const ruleFormRef = ref<FormInstance>();
 const expandTable = ref();
+const flagUpdate = ref(true);
 const ruleForm = reactive({
   title: "",
   path: "",
@@ -169,6 +171,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           getAllAsyncRoute();
         }
       } else {
+        flagUpdate.value = false;
         const res: MenuUpdateResult = await getMenuUpdate({
           id: id.value,
           ...ruleForm,
@@ -178,6 +181,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
           message("操作成功!", { type: "success" });
           close();
           await getAllAsyncRoute();
+          flagUpdate.value = true;
         }
       }
     } else {
@@ -264,6 +268,7 @@ const addMenu = () => {
       ref="expandTable"
       :data="tableData"
       style="width: 100%"
+      v-if="flagUpdate"
       @expand-change="handlerExpand"
       row-key="id"
       border
