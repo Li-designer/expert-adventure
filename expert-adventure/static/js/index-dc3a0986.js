@@ -1,1 +1,0 @@
-import{q as e,t as n,v as t}from"./runtime-core.esm-bundler-3932d34b.js";const o=e({name:"Welcome"}),s=e({...o,setup(a){return(c,r)=>(n(),t("h1",null,"Pure-Admin-Thin（非国际化版本）"))}});export{s as default};
