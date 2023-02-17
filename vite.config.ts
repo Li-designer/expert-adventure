@@ -50,6 +50,10 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
           changeOrigin: true,
           rewrite: path =>
             path.replace(/^\/expert-adventure/, "/expert-adventure")
+        },
+        "/socket.io": {
+          target: "ws://localhost:3002",
+          ws: true
         }
       }
     },

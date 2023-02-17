@@ -64,20 +64,20 @@ export const useUserStore = defineStore({
       router.push("/login");
     }
     /** 刷新`token` */
-    // async handRefreshToken(data) {
-    //   return new Promise<RefreshTokenResult>((resolve, reject) => {
-    //     refreshTokenApi(data)
-    //       .then(data => {
-    //         if (data) {
-    //           setToken(data.data);
-    //           resolve(data);
-    //         }
-    //       })
-    //       .catch(error => {
-    //         reject(error);
-    //       });
-    //   });
-    // }
+    async handRefreshToken(data) {
+      return new Promise<RefreshTokenResult>((resolve, reject) => {
+        // refreshTokenApi(data)
+        //   .then(data => {
+        //     if (data) {
+        //       setToken(data.data);
+        //       resolve(data);
+        //     }
+        //   })
+        //   .catch(error => {
+        //     reject(error);
+        //   });
+      });
+    }
   }
 });
 
