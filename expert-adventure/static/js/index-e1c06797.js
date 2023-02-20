@@ -1,0 +1,1 @@
+import{_ as e}from"./_plugin-vue_export-helper-c27b6911.js";import{t as n,v as r}from"./runtime-core.esm-bundler-3932d34b.js";const t={};function c(o,a){return n(),r("div",null,"测试yemian")}const f=e(t,[["render",c]]);export{f as default};
